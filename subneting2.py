@@ -1,7 +1,7 @@
 # INPUTS
-# ip = input('Inserta la IP: ')
-ip = '203.34.134.81'
+ip = input('Inserta la IP: ')
 mascara = input('Inserta el número de bits de la máscara: ')
+# ip = '203.34.134.81'
 
 # MASCARA SEPARADA
 separada = ip.split('.')
@@ -36,6 +36,24 @@ def a_binario_ip(lista):
     binaria = [bino1, bino2, bino3, bino4]
     return binaria
 
+# MÁSCARA DE LA SUBRED
+def a_binario_mascarasubred(mascara):
+    total = 32 - int(mascara)
+    cadena = ''
+    for i in range(0, int(mascara)):
+        cadena += '1'
+    for i in range(int(mascara), 32):
+        cadena += '0'
+    
+    o1 = '0b' + cadena[0:8]
+    o2 = '0b' + cadena[8:16]
+    o3 = '0b' + cadena[16:24]
+    o4 = '0b' + cadena[24:32]
+    
+    octetos = [o1, o2, o3, o4]
+    return octetos
+
+# print(a_binario_mascarasubred(mascara))
 
 # Pasa la MÁSCARA a binario
 def a_binario_mascara(lista):
@@ -68,21 +86,24 @@ def comparar(listip, listmascara):
     oma4 = int(listmascara[3], 2)
     and4 = oip4 & oma4
 
-    andlist = [and1, and2, and3, and4]
-    print(andlist)
+    andlist = [bin(and1), bin(and2), bin(and3), bin(and4)]
     return andlist
 
 
-# MÁSCARA DE LA SUBRED
+# Ejecuciones
+# Ejecuciones
+# Ejecuciones
 
+# Variable del AND entre la IP y la MÁSCARA
+andipmascara = comparar(a_binario_ip(separada), a_binario_mascarasubred(mascara))
+print(andipmascara)
 
+# Pasa la IP a binario
+# print(a_binario_ip(separada))
 
-hola = comparar(a_binario_ip(separada), a_binario_mascara(que_clase(separada)))
-print(hola)
+# Pasa la máscara de la clase a binario
+# print(a_binario_mascara(que_clase(separada)))
 
-
-print(a_binario_ip(separada))
-print(a_binario_mascara(que_clase(separada)))
 
 
 
