@@ -24,7 +24,7 @@ def que_clase(separada):
         print('Es clase E')
 
 
-
+# Pasa la IP a binario
 def a_binario_ip(lista):
     o1, o2, o3 ,o4 = lista
 
@@ -37,6 +37,7 @@ def a_binario_ip(lista):
     return binaria
 
 
+# Pasa la MÁSCARA a binario
 def a_binario_mascara(lista):
     o1, o2, o3 ,o4 = lista
 
@@ -49,7 +50,7 @@ def a_binario_mascara(lista):
     return binaria
 
 
-
+# Compara la IP con la MÁSCARA y realiza un AND
 def comparar(listip, listmascara):
     oip1 = int(listip[0], 2)
     oma1 = int(listmascara[0], 2)
@@ -67,13 +68,13 @@ def comparar(listip, listmascara):
     oma4 = int(listmascara[3], 2)
     and4 = oip4 & oma4
 
+    andlist = [and1, and2, and3, and4]
+    print(andlist)
+    return andlist
 
 
+# MÁSCARA DE LA SUBRED
 
-    print(bin(and1))
-    print(bin(and2))
-    print(bin(and3))
-    print(bin(and4))
 
 
 hola = comparar(a_binario_ip(separada), a_binario_mascara(que_clase(separada)))
@@ -82,6 +83,7 @@ print(hola)
 
 print(a_binario_ip(separada))
 print(a_binario_mascara(que_clase(separada)))
+
 
 
 
