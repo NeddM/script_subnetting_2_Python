@@ -1,7 +1,8 @@
 # INPUTS
-ip = input('Inserta la IP: ')
-mascara = input('Inserta el número de bits de la máscara: ')
-# ip = '203.34.134.81'
+# ip = input('Inserta la IP: ')
+# mascara = input('Inserta el número de bits de la máscara: ')
+ip = '192.168.15.10'
+mascara = 26
 
 # MASCARA SEPARADA
 separada = ip.split('.')
@@ -23,6 +24,24 @@ def que_clase(separada):
     if x >= 240 and x <= 247:
         print('Es clase E')
 
+def que_clase_bits(separada):
+    x = int(separada[0])
+    if x >= 0 and x <= 127:
+        return 8
+        # print('Es clase A')
+    if x >= 128 and x <= 191:
+        return 16
+        # print('Es clase B')
+    if x >= 192 and x <= 223:
+        return 24
+        # print('Es clase C')
+    if x >= 224 and x <= 239:
+        return 32
+        # print('Es clase D')
+    if x >= 240 and x <= 247:
+        print('Es clase E')
+
+
 
 # Pasa la IP a binario
 def a_binario_ip(lista):
@@ -36,7 +55,7 @@ def a_binario_ip(lista):
     binaria = [bino1, bino2, bino3, bino4]
     return binaria
 
-# MÁSCARA DE LA SUBRED
+# MÁSCARA DE LA SUBRED BINARIO
 def a_binario_mascarasubred(mascara):
     total = 32 - int(mascara)
     cadena = ''
@@ -45,13 +64,23 @@ def a_binario_mascarasubred(mascara):
     for i in range(int(mascara), 32):
         cadena += '0'
     
-    o1 = '0b' + cadena[0:8]
-    o2 = '0b' + cadena[8:16]
-    o3 = '0b' + cadena[16:24]
-    o4 = '0b' + cadena[24:32]
+    o1 = cadena[0:8]
+    o2 = cadena[8:16]
+    o3 = cadena[16:24]
+    o4 = cadena[24:32]
     
     octetos = [o1, o2, o3, o4]
     return octetos
+
+# MÁSCARA DE LA SUBRED INT
+def mascarasubreddef(mascara):
+    o1 = int(mascara[0], 2)
+    o2 = int(mascara[1], 2)
+    o3 = int(mascara[2], 2)
+    o4 = int(mascara[3], 2)
+
+    return [o1, o2, o3, o4]
+
 
 # print(a_binario_mascarasubred(mascara))
 
@@ -90,20 +119,77 @@ def comparar(listip, listmascara):
     return andlist
 
 
+def contar_bits_host(mascara):
+    dif = 32 - int(mascara)
+    return str(dif)
+
+def contar_bits_subred(mas1, mas2):
+    dif = 32 - (int(mas1) + int(mas2))
+    return int(dif)
+
+def idsubredoctetos(mascara):
+# def idsubredoctetos():
+    string = ''
+    if mascara <= 8 and mascara >= 0:
+        for i in range(mascara, 8):
+            string += '1'
+    if mascara >= 9 and mascara <= 16 :
+        for i in range(mascara, 8):
+            string += '1'
+    if mascara >= 17 and mascara <= 24 :
+        for i in range(mascara, 8):
+            string += '1'
+    if mascara >= 25 and mascara <= 32 :
+        for i in range(mascara, 8):
+            string += '1'
+
+
+    return string
+
+
+print(idsubredoctetos(mascara))
+# print(idsubredoctetos())
+
+
+
+
+
+
 # Ejecuciones
 # Ejecuciones
 # Ejecuciones
 
-# Variable del AND entre la IP y la MÁSCARA
+# AND entre la IP y la MÁSCARA
 andipmascara = comparar(a_binario_ip(separada), a_binario_mascarasubred(mascara))
-print(andipmascara)
+andone = [int(andipmascara[0], 2), int(andipmascara[1], 2), int(andipmascara[2], 2), int(andipmascara[3], 2)]
+print(andone)
 
 # Pasa la IP a binario
-# print(a_binario_ip(separada))
+ipbinario = a_binario_ip(separada)
 
 # Pasa la máscara de la clase a binario
-# print(a_binario_mascara(que_clase(separada)))
+masbin = a_binario_mascara(que_clase(separada))
 
+# Máscara subred
+mascarasubred = mascarasubreddef(a_binario_mascarasubred(mascara))
+
+# Nº de bits en subred
+contarsub = contar_bits_subred(que_clase_bits(separada), contar_bits_host(mascara))
+
+# Sacar id de subred
+idsubred = comparar(ipbinario, a_binario_mascarasubred(mascara))
+
+# SOLUCIONES
+# SOLUCIONES
+# SOLUCIONES
+print(f'1. Máscara de subred: {mascarasubred[0]}.{mascarasubred[1]}.{mascarasubred[2]}.{mascarasubred[3]}         ')
+# print(f'2. Dirección IP de broadcast para la primera subred: {}')
+print(f'3. Número de bits de red: {que_clase_bits(separada)}')
+print(f'4. Número de bits de subred: {contarsub}')
+print(f'5. Número de bits de host: {contar_bits_host(mascara)}')
+print(f'6. ID de red: {str(andone[0])}.{str(andone[1])}.{str(andone[2])}.{str(andone[3])}')
+# print(f'7. ID de subred: {idsubred}')
+# print(f'8. Dirección IP de 2 PCs por subred: {}')
 
 
 
