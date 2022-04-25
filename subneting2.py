@@ -118,6 +118,25 @@ def comparar(listip, listmascara):
     andlist = [bin(and1), bin(and2), bin(and3), bin(and4)]
     return andlist
 
+def compararor(listip, listmascara):
+    oip1 = int(listip[0], 2)
+    oma1 = int(listmascara[0], 2)
+    and1 = oip1 | oma1
+
+    oip2 = int(listip[1], 2)
+    oma2 = int(listmascara[1], 2)
+    and2 = oip2 | oma2
+
+    oip3 = int(listip[2], 2)
+    oma3 = int(listmascara[2], 2)
+    and3 = oip3 | oma3
+
+    oip4 = int(listip[3], 2)
+    oma4 = int(listmascara[3], 2)
+    and4 = oip4 | oma4
+
+    andlist = [bin(and1), bin(and2), bin(and3), bin(and4)]
+    return andlist
 
 def contar_bits_host(mascara):
     dif = 32 - int(mascara)
@@ -128,28 +147,36 @@ def contar_bits_subred(mas1, mas2):
     return int(dif)
 
 def idsubredoctetos(mascara):
-# def idsubredoctetos():
     string = ''
-    if mascara <= 8 and mascara >= 0:
-        for i in range(mascara, 8):
-            string += '1'
-    if mascara >= 9 and mascara <= 16 :
-        for i in range(mascara, 8):
-            string += '1'
-    if mascara >= 17 and mascara <= 24 :
-        for i in range(mascara, 8):
-            string += '1'
-    if mascara >= 25 and mascara <= 32 :
-        for i in range(mascara, 8):
-            string += '1'
+    contador = 0
+    sol = []
+    while contador < mascara:
+        string += '1'
+        contador += 1
+
+    oct1 = string[0:8]
+    oct2 = string[8:16]
+    oct3 = string[16:24]
+    oct4 = string[24:32]
+
+    if len(oct1) >= 0 and len(oct1) < 8:
+        sol = [oct1, '', '', '']
+    elif len(oct2) >= 0 and len(oct2) < 8:
+        sol = ['', oct2, '', '']
+    elif len(oct3) >= 0 and len(oct3) < 8:
+        sol = ['', '', oct3, '']
+    elif len(oct4) >= 0 and len(oct4) <= 8:
+        while len(oct4) < 8:
+            oct4 += '0'
+            sol = ['00000000', '00000000', '00000000', oct4]
+            print(sol)
+    # print(sol)
+    # print(int(oct4, 2))
+    return sol
 
 
-    return string
-
-
-print(idsubredoctetos(mascara))
+# print(idsubredoctetos(mascara))
 # print(idsubredoctetos())
-
 
 
 
@@ -177,7 +204,12 @@ mascarasubred = mascarasubreddef(a_binario_mascarasubred(mascara))
 contarsub = contar_bits_subred(que_clase_bits(separada), contar_bits_host(mascara))
 
 # Sacar id de subred
-idsubred = comparar(ipbinario, a_binario_mascarasubred(mascara))
+# idsubred = comparar(ipbinario, a_binario_mascarasubred(mascara))
+
+# Sacar id de subred
+red = compararor(a_binario_ip(separada), idsubredoctetos(mascara))
+idsubred = int(red[0], 2), int(red[1], 2), int(red[2], 2), int(red[3], 2)
+print(idsubred)
 
 # SOLUCIONES
 # SOLUCIONES
@@ -188,8 +220,9 @@ print(f'3. Número de bits de red: {que_clase_bits(separada)}')
 print(f'4. Número de bits de subred: {contarsub}')
 print(f'5. Número de bits de host: {contar_bits_host(mascara)}')
 print(f'6. ID de red: {str(andone[0])}.{str(andone[1])}.{str(andone[2])}.{str(andone[3])}')
-# print(f'7. ID de subred: {idsubred}')
+print(f'7. ID de subred: {int(red[0], 2)}.{int(red[1], 2)}.{int(red[2], 2)}.{int(red[3], 2)}')
 # print(f'8. Dirección IP de 2 PCs por subred: {}')
+
 
 
 
